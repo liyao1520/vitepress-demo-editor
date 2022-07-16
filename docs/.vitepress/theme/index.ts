@@ -1,18 +1,11 @@
 import DefaultTheme from "vitepress/theme";
 import { App } from "vue";
-import { vuePlugin } from "../../../lib";
-
+import { vuePlugin, addImportMap } from "../../../lib";
+import dayjs from "dayjs";
 export default {
   ...DefaultTheme,
   enhanceApp({ app }: { app: App }) {
-    app.use(vuePlugin, {
-      defaultDirection: "column",
-      ms: 1000,
-    });
-    app.component("tag", {
-      render() {
-        return "i-tag";
-      },
-    });
+    app.use(vuePlugin);
+    addImportMap("dayjs", dayjs);
   },
 };

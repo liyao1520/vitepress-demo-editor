@@ -2,7 +2,7 @@
 
 const importMaps: Record<string, any> = {};
 
-export function addImportMap(key: string, value: string) {
+export function addImportMap(key: string, value: any) {
   importMaps[key] = value;
 }
 
@@ -33,7 +33,7 @@ export function handleImportMaps(script: string) {
 
 function handleDefault(script: string) {
   return script.replace(/import(.*?)from\s+['"]vue['"]/g, (match, p1) => {
-    p1 = p1.replace(/as/g, ":");
+    p1 = p1.replace(/\sas\s/g, ":");
     return `const ${p1} = _vue`;
   });
 }

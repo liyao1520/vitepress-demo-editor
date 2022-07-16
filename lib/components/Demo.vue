@@ -17,9 +17,11 @@
     </div>
     <div
       class="edit-wrap"
+      @mouseenter="toolsShow = true"
+      @mouseleave="toolsShow = false"
       :style="{ flex: direction === 'column' ? '0' : '4 0 40%' }"
     >
-      <div class="tools" v-if="toolsShow">
+      <div class="tools" v-if="toolsShow && demoEditShow">
         <span title="重置代码" class="reset-code" @click="resetCode">
           <svg
             t="1652853672207"
@@ -40,8 +42,6 @@
       <Edit
         class="edit"
         v-if="demoEditShow"
-        @mouseenter="toolsShow = true"
-        @mouseleave="toolsShow = false"
         :style="{
           height: editHeight + 'px',
           minHeight: direction === 'row' ? '200px' : '300px',
@@ -108,10 +108,7 @@ import Compiler from "../compiler";
 import { ConfigToken } from "../token";
 import Edit from "./Edit.vue";
 
-const { ms, defaultDirection, handleError } = inject(ConfigToken, {
-  ms: 300,
-  defaultDirection: "row" as "row",
-});
+const { ms, defaultDirection, handleError } = inject(ConfigToken, {});
 
 const props = defineProps<{
   initialValue: string;
@@ -119,7 +116,7 @@ const props = defineProps<{
 }>();
 
 const direction = props.direction ? props.direction : defaultDirection;
-console.log(direction);
+
 const demoEditShow = ref(direction == "row");
 
 const errors = ref<any[]>([]);
@@ -254,10 +251,12 @@ const handleChange = (content: string) => {
   margin: 5px 0;
 }
 .demo-control {
+  position: relative;
   padding: 10px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
+  z-index: 1;
 }
 .demo-control svg {
   display: inline;

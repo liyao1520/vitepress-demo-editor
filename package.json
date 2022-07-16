@@ -2,7 +2,8 @@
   "name": "vitepress-demo-editor",
   "version": "1.0.0",
   "description": "a vitepress plugin",
-  "main": "index.js",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.es.js",
   "license": "MIT",
   "keywords": [
     "vite",
@@ -15,10 +16,10 @@
   "files": [
     "lib"
   ],
-  "homepage": "http://ui.coderly.top/",
+  "homepage": "https://github.com/liyao1520/vitepress-demo-editor",
   "repository": {
     "type": "git",
-    "url": "git@github.com:liyao1520/promise-ui.git"
+    "url": "git@github.com:liyao1520/vitepress-demo-editor.git"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs",
@@ -27,11 +28,15 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "dayjs": "^1.11.3",
     "vitepress": "^1.0.0-alpha.4",
     "vue": "^3.2.37"
   },
   "dependencies": {
     "markdown-it-container": "^3.0.0",
     "monaco-editor": "^0.33.0"
+  },
+  "peerDependencies": {
+    "vitepress": ">=0.1.0"
   }
 }
