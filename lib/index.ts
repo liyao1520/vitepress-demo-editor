@@ -5,6 +5,7 @@ import * as Vue from "vue";
 import { setVue, setApp } from "./memo";
 import { ConfigToken, Iconfig } from "./token";
 export { addImportMap } from "./compiler/importMaps";
+
 export const vuePlugin = function (app: Vue.App, config: Iconfig) {
   const Demo = Vue.defineAsyncComponent(() => import("./components/Demo.vue"));
   app.component("Demo", Demo);
