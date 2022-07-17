@@ -23,7 +23,6 @@ export default defineConfig({
       formats: ["cjs", "es"],
     },
     rollupOptions: {
-      external: ["vue"],
       input: [
         resolve(__dirname, "lib", "index.ts"),
         resolve(__dirname, "lib", "markdownPlugin.ts"),
