@@ -12,12 +12,13 @@ const markDownPlugin = function (md: any) {
         const props = tokens[idx].info;
         const hasColumn = props.includes("column");
         return `
+        <clientOnly>
         <demo initial-value="${md.utils.escapeHtml(content)}" direction="${
           hasColumn ? "column" : ""
         }" >
         `;
       }
-      return "</demo>";
+      return "</demo></clientOnly>";
     },
   });
   // code

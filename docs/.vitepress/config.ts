@@ -1,5 +1,6 @@
 import { UserConfig } from "vitepress";
-import markDownPlugin from "../../lib/markdownPlugin";
+// import markDownPlugin from "../../lib/markdownPlugin";
+import markDownPlugin from "../../dist/markdownPlugin.cjs";
 
 const config: UserConfig = {
   title: "VitePress",

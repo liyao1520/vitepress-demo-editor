@@ -11,7 +11,6 @@ export const vuePlugin = function (app: Vue.App, config: Iconfig) {
   app.component("Demo", Demo);
   setVue(Vue);
   setApp(app);
-
   app.provide(
     ConfigToken,
     Object.assign({ ms: 300, defaultDirection: "row" as "row" }, config)

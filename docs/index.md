@@ -1,50 +1,29 @@
-# demo
+# AutoComplete 自动填充
 
-:::demo
+## 基础用法
 
-```vue
-<template>
-  <button class="demo-btn" @click="count--">➖</button>
-  <b class="demo-count" :class="{ red: count >= 3 }">{{ count }}</b>
-  <button class="demo-btn" @click="count++">➕</button>
-</template>
-<script setup>
-import { ref } from "vue";
-const count = ref(0);
-const text = ref("");
-</script>
-<style>
-/* 默认 scoped */
-.demo-btn {
-  padding: 0 10px;
-  border: 1px solid #ccc;
-}
-.demo-count {
-  display: inline-block;
-  text-align: center;
-  margin: 0 10px;
-  min-width: 30px;
-}
-/* global */
-
-:global(.red) {
-  color: red;
-}
-</style>
-```
-
-:::
-
-:::demo
+:::demo column
 
 ```vue
 <template>
-  {{ day }}
+  <p-auto-complete
+    v-model="inputValue"
+    placeholder="请输入邮箱"
+    :options="options"
+  />
 </template>
 <script setup>
-import dayjs from "dayjs";
-import { ref } from "vue";
-const day = ref(dayjs());
+import { ref, computed } from "vue";
+const inputValue = ref("");
+const options = computed(() =>
+  ["@gmail.com", "@163.com", "@qq.com"].map((suffix) => {
+    const prefix = inputValue.value.split("@")[0];
+    return {
+      label: prefix + suffix,
+      value: prefix + suffix,
+    };
+  })
+);
 </script>
 ```
 

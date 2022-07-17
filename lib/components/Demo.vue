@@ -108,7 +108,10 @@ import Compiler from "../compiler";
 import { ConfigToken } from "../token";
 import Edit from "./Edit.vue";
 
-const { ms, defaultDirection, handleError } = inject(ConfigToken, {});
+const { ms, defaultDirection, handleError } = inject(ConfigToken, {
+  ms: 30,
+  defaultDirection: "row",
+});
 
 const props = defineProps<{
   initialValue: string;
@@ -153,8 +156,8 @@ onMounted(async () => {
 });
 
 const debounce = (fn: (...args: any[]) => any, wait: number) => {
-  let timer: null | number = null;
-  return (...args) => {
+  let timer: any;
+  return (...args: any[]) => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(this, args);
@@ -193,7 +196,7 @@ const handleChange = (content: string) => {
   position: relative;
   flex: 6 0 60%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 4px;
 }
 .tools {

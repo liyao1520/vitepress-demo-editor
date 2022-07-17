@@ -4,7 +4,7 @@
 
 一个 `vitepress` 文档插件,可以帮助你在编写文档的时候增加 `Vue` 示例,通常使用在组件库展示,支持在线编辑演示源代码且视图实时更新
 
-## 预览
+## demo 预览
 
 [promiseui](http://ui.coderly.top/components/button/) (一个 vue3 组件库)
 
@@ -16,11 +16,14 @@
 
 **需要先安装两个插件**
 
-### 1. 添加 vue 插件
+### 1. 添加 vue 插件 和 样式文件
 
 ```js
 // .vitepress/theme/index.js
+
 import { vuePlugin } from "vitepress-demo-editor";
+import "vitepress-demo-editor/dist/style.css";
+
 export default {
   // ...otherConfig
   enhanceApp({ app }) {
@@ -113,13 +116,13 @@ const text = ref("");
 ```js
 // .vitepress/theme/index.js
 import { vuePlugin, addImportMap } from "vitepress-demo-editor";
-import dayjs from "dayjs";
+import axios from "axios";
 
 export default {
   // ...otherConfig
   enhanceApp({ app }) {
     app.use(vuePlugin);
-    addImportMap("dayjs", dayjs);
+    addImportMap("axios", axios);
   },
 };
 ```
@@ -166,6 +169,16 @@ export default {
     });
   },
 };
+```
+
+`由于异步 import 导致 addImportMap 执行时机可能会慢,在这前执行的代码会报错.所以要配置vite.config.ts optimizeDeps 预构建`
+
+```js
+export default defineConfig({
+  optimizeDeps: {
+    include: ["promiseui-vue"], //填入库名
+  },
+});
 ```
 
 #### 黑暗模式

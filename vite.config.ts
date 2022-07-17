@@ -1,24 +1,25 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
 import dts from "vite-plugin-dts";
-import libCss from "vite-plugin-libcss";
+import { resolve } from "path";
+
+// import libCss from "vite-plugin-libcss";
+
 export default defineConfig({
   plugins: [
     vue(),
-    libCss(),
+
     dts({
       include: ["lib"],
     }),
   ],
 
   build: {
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     lib: {
       entry: resolve(__dirname, "lib"),
-      fileName(format) {
-        return `[name].${format}.js`;
-      },
+      name: "demoEditor",
+      fileName: (format) => `[name].${format}.js`,
       formats: ["cjs", "es"],
     },
     rollupOptions: {
@@ -27,11 +28,6 @@ export default defineConfig({
         resolve(__dirname, "lib", "index.ts"),
         resolve(__dirname, "lib", "markdownPlugin.ts"),
       ],
-      output: {
-        globals: {
-          vue: "Vue",
-        },
-      },
     },
   },
 });

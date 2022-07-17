@@ -1,5 +1,5 @@
 Arguments: 
-  E:\nodejs\node.exe E:\node_cache\node_global\node_modules\yarn\bin\yarn.js add @types/vite-plugin-dts
+  E:\nodejs\node.exe E:\node_cache\node_global\node_modules\yarn\bin\yarn.js add -D @types/@rollup/plugin-node-resolve
 
 PATH: 
   E:\python\Scripts\;E:\python\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NGX;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\nodejs\node_global;"%JAVA_HOME8u241%\bin;%JAVA_HOME8u241%\jre\bin;";F:\应用软件\Git\cmd;F:\yarn\bin\;E:\development_environment\MySQL\bin;E:\开发工具\Microsoft VS Code Insiders\bin;C:\Program Files (x86)\ZeroTier\One\;F:\应用软件\互传\EasyShare\x86\;F:\应用软件\互传\EasyShare\x64\;E:\node_cache\node_global\node_modules;E:\yarnData\global\bin;E:\mysql\mysql-8.0.27-winx64;E:\mysql\mysql-8.0.27-winx64\bin;E:\开发工具\微信web开发者工具\dll;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;E:\Anaconda3;E:\Anaconda3\Library\mingw-w64\bin;E:\Anaconda3\Library\usr\bin;E:\Anaconda3\Library\bin;E:\Anaconda3\Scripts;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;E:\development environment\Node.js\node_global;C:\Users\15201\AppData\Local\Yarn\bin;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;_cache\node_global;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;
@@ -14,25 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.npmjs.org/@types%2fvite-plugin-dts: Not found
-      at Request.params.callback [as _callback] (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:67029:18)
-      at Request.self.callback (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:140883:22)
-      at Request.emit (node:events:390:28)
-      at Request.<anonymous> (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:141855:10)
-      at Request.emit (node:events:390:28)
-      at IncomingMessage.<anonymous> (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:141777:12)
-      at Object.onceWrapper (node:events:509:28)
-      at IncomingMessage.emit (node:events:402:35)
-      at endReadableNT (node:internal/streams/readable:1343:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: getaddrinfo ENOENT github.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
 
 npm manifest: 
   {
     "name": "vitepress-demo-editor",
-    "version": "1.0.2",
+    "version": "1.0.6",
     "description": "a vitepress plugin",
-    "main": "lib/index.cjs.js",
-    "module": "lib/index.es.js",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.es.js",
+    "types": "./dist/index.d.ts",
     "license": "MIT",
     "keywords": [
       "vite",
@@ -43,7 +35,7 @@ npm manifest:
       "editor"
     ],
     "files": [
-      "lib"
+      "dist"
     ],
     "homepage": "https://github.com/liyao1520/vitepress-demo-editor",
     "repository": {
@@ -57,8 +49,13 @@ npm manifest:
       "build": "vite build"
     },
     "devDependencies": {
+      "@rollup/plugin-node-resolve": "^13.3.0",
+      "@types/markdown-it-container": "^2.0.5",
       "dayjs": "^1.11.3",
+      "promiseui-vue": "^0.0.17",
       "vite-plugin-dts": "^1.3.0",
+      "vite-plugin-libcss": "^1.0.5",
+      "vite-plugin-monaco-editor": "^1.1.0",
       "vitepress": "^1.0.0-alpha.4",
       "vue": "^3.2.37"
     },
@@ -294,6 +291,27 @@ Lockfile:
       "@nodelib/fs.scandir" "2.1.5"
       fastq "^1.6.0"
   
+  "@rollup/plugin-node-resolve@^13.3.0":
+    version "13.3.0"
+    resolved "https://registry.npmjs.org/@rollup/plugin-node-resolve/-/plugin-node-resolve-13.3.0.tgz#da1c5c5ce8316cef96a2f823d111c1e4e498801c"
+    integrity sha512-Lus8rbUo1eEcnS4yTFKLZrVumLPY+YayBdWXgFSHYhTT2iJbMhoaaBL3xl5NCdeRytErGr8tZ0L71BMRmnlwSw==
+    dependencies:
+      "@rollup/pluginutils" "^3.1.0"
+      "@types/resolve" "1.17.1"
+      deepmerge "^4.2.2"
+      is-builtin-module "^3.1.0"
+      is-module "^1.0.0"
+      resolve "^1.19.0"
+  
+  "@rollup/pluginutils@^3.1.0":
+    version "3.1.0"
+    resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
+    integrity sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
+    dependencies:
+      "@types/estree" "0.0.39"
+      estree-walker "^1.0.1"
+      picomatch "^2.2.2"
+  
   "@rushstack/node-core-library@3.49.0", "@rushstack/node-core-library@^3.45.1":
     version "3.49.0"
     resolved "https://registry.npmjs.org/@rushstack/node-core-library/-/node-core-library-3.49.0.tgz#0324c1a5ba5e469967b70e9718d1a90750648503"
@@ -342,15 +360,52 @@ Lockfile:
     resolved "https://registry.npmjs.org/@types/argparse/-/argparse-1.0.38.tgz#a81fd8606d481f873a3800c6ebae4f1d768a56a9"
     integrity sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==
   
+  "@types/estree@0.0.39":
+    version "0.0.39"
+    resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+    integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+  
+  "@types/linkify-it@*":
+    version "3.0.2"
+    resolved "https://registry.npmjs.org/@types/linkify-it/-/linkify-it-3.0.2.tgz#fd2cd2edbaa7eaac7e7f3c1748b52a19143846c9"
+    integrity sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==
+  
+  "@types/markdown-it-container@^2.0.5":
+    version "2.0.5"
+    resolved "https://registry.npmjs.org/@types/markdown-it-container/-/markdown-it-container-2.0.5.tgz#abd793b64c5adc7b2d1e8963eddb388198248152"
+    integrity sha512-8v5jIC5gcCUv+JcD0DExwNBkoKC0kLB4acensF0NoNlTIcXmQxF3RDjzAdIW82sXSoR+n772ePguxIWlq2ELvA==
+    dependencies:
+      "@types/markdown-it" "*"
+  
+  "@types/markdown-it@*":
+    version "12.2.3"
+    resolved "https://registry.npmjs.org/@types/markdown-it/-/markdown-it-12.2.3.tgz#0d6f6e5e413f8daaa26522904597be3d6cd93b51"
+    integrity sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==
+    dependencies:
+      "@types/linkify-it" "*"
+      "@types/mdurl" "*"
+  
+  "@types/mdurl@*":
+    version "1.0.2"
+    resolved "https://registry.npmjs.org/@types/mdurl/-/mdurl-1.0.2.tgz#e2ce9d83a613bacf284c7be7d491945e39e1f8e9"
+    integrity sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==
+  
+  "@types/node@*", "@types/node@^18.0.5":
+    version "18.0.5"
+    resolved "https://registry.npmjs.org/@types/node/-/node-18.0.5.tgz#96be8113b014e9e7f0c3609c4a25afadd85ff659"
+    integrity sha512-En7tneq+j0qAiVwysBD79y86MT3ModuoIJbe7JXp+sb5UAjInSShmK3nXXMioBzfF7rXC12hv12d4IyCVwN4dA==
+  
   "@types/node@12.20.24":
     version "12.20.24"
     resolved "https://registry.npmjs.org/@types/node/-/node-12.20.24.tgz#c37ac69cb2948afb4cef95f424fa0037971a9a5c"
     integrity sha512-yxDeaQIAJlMav7fH5AQqPH1u8YIuhYJXYBzxaQ4PifsU0GDO38MSdmEDeRlIxrKbC6NbEaaEHDanWb+y30U8SQ==
   
-  "@types/node@^18.0.5":
-    version "18.0.5"
-    resolved "https://registry.npmjs.org/@types/node/-/node-18.0.5.tgz#96be8113b014e9e7f0c3609c4a25afadd85ff659"
-    integrity sha512-En7tneq+j0qAiVwysBD79y86MT3ModuoIJbe7JXp+sb5UAjInSShmK3nXXMioBzfF7rXC12hv12d4IyCVwN4dA==
+  "@types/resolve@1.17.1":
+    version "1.17.1"
+    resolved "https://registry.npmjs.org/@types/resolve/-/resolve-1.17.1.tgz#3afd6ad8967c77e4376c598a82ddd58f46ec45d6"
+    integrity sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==
+    dependencies:
+      "@types/node" "*"
   
   "@types/web-bluetooth@^0.0.14":
     version "0.0.14"
@@ -457,7 +512,7 @@ Lockfile:
     resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.37.tgz"
     integrity sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==
   
-  "@vueuse/core@^8.5.0":
+  "@vueuse/core@^8.5.0", "@vueuse/core@^8.6.0":
     version "8.9.3"
     resolved "https://registry.npmmirror.com/@vueuse/core/-/core-8.9.3.tgz"
     integrity sha512-q2pr3N7FPG7IBBhEXTYOJU+38VwKMLP5IfD33byzBV4Th7f1JHT4qPKvJrvr17knAefPRzNqgt9et+xFqaRlPQ==
@@ -523,6 +578,11 @@ Lockfile:
     dependencies:
       sprintf-js "~1.0.2"
   
+  async-validator@^4.2.5:
+    version "4.2.5"
+    resolved "https://registry.npmjs.org/async-validator/-/async-validator-4.2.5.tgz#c96ea3332a521699d0afaaceed510a54656c6339"
+    integrity sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==
+  
   balanced-match@^1.0.0:
     version "1.0.2"
     resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
@@ -546,6 +606,11 @@ Lockfile:
     integrity sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
     dependencies:
       fill-range "^7.0.1"
+  
+  builtin-modules@^3.0.0:
+    version "3.3.0"
+    resolved "https://registry.npmjs.org/builtin-modules/-/builtin-modules-3.3.0.tgz#cae62812b89801e9656336e46223e030386be7b6"
+    integrity sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==
   
   chalk@^4.1.2:
     version "4.1.2"
@@ -598,6 +663,11 @@ Lockfile:
     integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
     dependencies:
       ms "2.1.2"
+  
+  deepmerge@^4.2.2:
+    version "4.2.2"
+    resolved "https://registry.npmjs.org/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
+    integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
   
   esbuild-android-64@0.14.49:
     version "0.14.49"
@@ -725,6 +795,11 @@ Lockfile:
       esbuild-windows-64 "0.14.49"
       esbuild-windows-arm64 "0.14.49"
   
+  estree-walker@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.npmjs.org/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
+    integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
+  
   estree-walker@^2.0.2:
     version "2.0.2"
     resolved "https://registry.npmmirror.com/estree-walker/-/estree-walker-2.0.2.tgz"
@@ -822,6 +897,13 @@ Lockfile:
     resolved "https://registry.npmjs.org/import-lazy/-/import-lazy-4.0.0.tgz#e8eb627483a0a43da3c03f3e35548be5cb0cc153"
     integrity sha512-rKtvo6a868b5Hu3heneU+L4yEQ4jYKLtjpnPeUdK7h0yzXGmyBTypknlkCvHFBqfX9YlorEiMM6Dnq/5atfHkw==
   
+  is-builtin-module@^3.1.0:
+    version "3.1.0"
+    resolved "https://registry.npmjs.org/is-builtin-module/-/is-builtin-module-3.1.0.tgz#6fdb24313b1c03b75f8b9711c0feb8c30b903b00"
+    integrity sha512-OV7JjAgOTfAFJmHZLvpSTb4qi0nIILDV1gWPYDnDJUTNFM5aGlRAhk4QcT8i7TuAleeEV5Fdkqn3t4mS+Q11fg==
+    dependencies:
+      builtin-modules "^3.0.0"
+  
   is-core-module@^2.1.0, is-core-module@^2.9.0:
     version "2.9.0"
     resolved "https://registry.npmmirror.com/is-core-module/-/is-core-module-2.9.0.tgz"
@@ -840,6 +922,11 @@ Lockfile:
     integrity sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==
     dependencies:
       is-extglob "^2.1.1"
+  
+  is-module@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npmjs.org/is-module/-/is-module-1.0.0.tgz#3258fb69f78c14d5b815d664336b4cffb6441591"
+    integrity sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==
   
   is-number@^7.0.0:
     version "7.0.0"
@@ -908,7 +995,7 @@ Lockfile:
   
   markdown-it-container@^3.0.0:
     version "3.0.0"
-    resolved "https://registry.npmmirror.com/markdown-it-container/-/markdown-it-container-3.0.0.tgz"
+    resolved "https://registry.npmjs.org/markdown-it-container/-/markdown-it-container-3.0.0.tgz#1d19b06040a020f9a827577bb7dbf67aa5de9a5b"
     integrity sha512-y6oKTq4BB9OQuY/KLfk/O3ysFhB3IMYoIWhGJEidXt1NQFocFK2sA2t0NYZAMyMShAGL6x5OPIbrmXPIqaN9rw==
   
   merge2@^1.3.0:
@@ -966,7 +1053,7 @@ Lockfile:
     resolved "https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz"
     integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
   
-  picomatch@^2.3.1:
+  picomatch@^2.2.2, picomatch@^2.3.1:
     version "2.3.1"
     resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
     integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
@@ -985,6 +1072,14 @@ Lockfile:
     resolved "https://registry.npmmirror.com/preact/-/preact-10.10.0.tgz"
     integrity sha512-fszkg1iJJjq68I4lI8ZsmBiaoQiQHbxf1lNq+72EmC/mZOsFF5zn3k1yv9QGoFgIXzgsdSKtYymLJsrJPoamjQ==
   
+  promiseui-vue@^0.0.17:
+    version "0.0.17"
+    resolved "https://registry.npmjs.org/promiseui-vue/-/promiseui-vue-0.0.17.tgz#1c38754ec5fe4decf92d7ef76a5874ecd17ac442"
+    integrity sha512-9nG5NFGGb0uPNpKyKnwDZqppLePoeKkgRlW9rmvkTrLuwm4/lnX2Oy+qvg8W6w1j7LnS0ZldAe2yFl76nabqTQ==
+    dependencies:
+      "@vueuse/core" "^8.6.0"
+      async-validator "^4.2.5"
+  
   punycode@^2.1.0:
     version "2.1.1"
     resolved "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
@@ -995,7 +1090,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
     integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
   
-  resolve@^1.22.0:
+  resolve@^1.19.0, resolve@^1.22.0:
     version "1.22.1"
     resolved "https://registry.npmmirror.com/resolve/-/resolve-1.22.1.tgz"
     integrity sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==
@@ -1155,6 +1250,16 @@ Lockfile:
       fast-glob "^3.2.11"
       fs-extra "^10.0.1"
       ts-morph "^14.0.0"
+  
+  vite-plugin-libcss@^1.0.5:
+    version "1.0.5"
+    resolved "https://registry.npmjs.org/vite-plugin-libcss/-/vite-plugin-libcss-1.0.5.tgz#a44e139e6aae19589cc0e888a7bdd2e1e0be37a7"
+    integrity sha512-NUQwWhn9j8fpRBwHeDr35a3TuRP0xvdIHtJni+3DcnPcq4Vrg+G5A3ZtCJ8y2EC83G97tBJ36svPdiIVuBEfsQ==
+  
+  vite-plugin-monaco-editor@^1.1.0:
+    version "1.1.0"
+    resolved "https://registry.npmjs.org/vite-plugin-monaco-editor/-/vite-plugin-monaco-editor-1.1.0.tgz#a6238c2e13d5e98dd54a1bc51f6f189325219de3"
+    integrity sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==
   
   vite@^2.9.7:
     version "2.9.14"

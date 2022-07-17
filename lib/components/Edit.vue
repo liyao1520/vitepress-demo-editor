@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineExpose } from "vue";
-import initMonaco from "../monaco/initMonaco";
 import iDark from "../theme/dark.json";
+
+// import "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution";
+// import "monaco-editor/esm/vs/basic-languages/html/html.contribution";
+// import "monaco-editor/esm/vs/basic-languages/css/css.contribution";
+
 const props = defineProps({
   initialValue: {
     type: String,
@@ -20,10 +24,16 @@ const emit = defineEmits(["change"]);
 const monacoContainer = ref<HTMLDivElement | null>(null);
 let monacoInstance: any;
 onMounted(async () => {
-  const monaco = await initMonaco();
+  const [monaco] = await Promise.all([
+    import("monaco-editor/esm/vs/editor/editor.api"),
+    import(
+      "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution"
+    ),
+    import("monaco-editor/esm/vs/basic-languages/html/html.contribution"),
+    import("monaco-editor/esm/vs/basic-languages/css/css.contribution"),
+  ]);
 
   const isDark = document.documentElement.classList.contains("dark");
-
   if (!(window as any).monaco) {
     (window as any).monaco = monaco;
   }
@@ -41,6 +51,7 @@ onMounted(async () => {
     scrollbar: {
       handleMouseWheel: false,
     },
+    fontSize: 14,
   });
 
   monacoInstance.onDidChangeModelContent((e: any) => {
