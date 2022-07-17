@@ -1,6 +1,6 @@
 {
   "name": "vitepress-demo-editor",
-  "version": "1.0.7",
+  "version": "1.2.0",
   "description": "a vitepress plugin",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
