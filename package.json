@@ -1,6 +1,6 @@
 {
   "name": "vitepress-demo-editor",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "a vitepress plugin",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -15,7 +15,7 @@
     "editor"
   ],
   "files": [
-    "lib"
+    "dist"
   ],
   "homepage": "https://github.com/liyao1520/vitepress-demo-editor",
   "repository": {
@@ -29,10 +29,13 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/markdown-it-container": "^2.0.5",
     "dayjs": "^1.11.3",
+    "promiseui-vue": "^0.0.17",
     "vite-plugin-dts": "^1.3.0",
     "vite-plugin-libcss": "^1.0.5",
+    "vite-plugin-monaco-editor": "^1.1.0",
     "vitepress": "^1.0.0-alpha.4",
     "vue": "^3.2.37"
   },
