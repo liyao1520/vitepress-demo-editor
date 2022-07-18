@@ -22,7 +22,7 @@
 // .vitepress/theme/index.js
 
 import { vuePlugin } from "vitepress-demo-editor";
-import "vitepress-demo-editor/dist/style.css";
+import "vitepress-demo-editor/es/style.css";
 
 export default {
   // ...otherConfig
@@ -40,7 +40,7 @@ export default {
 
 ```js
 //.vitepress/config.js
-import markdownPlugin from "vitepress-demo-editor/dist/markdownPlugin.cjs";
+import markdownPlugin from "vitepress-demo-editor/cjs/markdownPlugin";
 const config = {
   // ...otherConfig
   markdown: {
