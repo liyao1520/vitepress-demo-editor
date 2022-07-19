@@ -135,7 +135,7 @@ export default class Compiler {
       _script.components = _app._context.components;
       _script.__scopeId = "data-v-${id}"; //节点的 __scopeId
       export default _script;
-    `;  
+    `;
   }
   private compilerStyle(ast: compiler.SFCParseResult, id: string) {
     const allStyles = ast.descriptor.styles.reduce((allStyles, item) => {
@@ -154,6 +154,7 @@ export default class Compiler {
     import { createApp,h,render } from 'vue'
     import App from '${this.scriptUrl}'
     const vnode = h(App)
+    vnode.appContext = _app._context; // 全局app
     const root = document.querySelector('${this.selector}');
     render(vnode,root)
     `);

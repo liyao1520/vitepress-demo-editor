@@ -1,4 +1,5 @@
-dist/**
-cjs/**
-es/**
+dist
+cjs
+es
+docs
 node_modules
