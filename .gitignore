@@ -1,4 +1,4 @@
-dist
-cjs
-es
+dist/**
+cjs/**
+es/**
 node_modules
