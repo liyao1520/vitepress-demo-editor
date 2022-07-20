@@ -2,7 +2,7 @@
 import { onMounted, ref, defineExpose } from "vue";
 import iDark from "../theme/dark.json";
 import iLight from "../theme/light.json";
-
+import initMonaco from "../monaco/initMonaco";
 const props = defineProps({
   initialValue: {
     type: String,
@@ -22,17 +22,7 @@ const emit = defineEmits(["change"]);
 const monacoContainer = ref<HTMLDivElement | null>(null);
 let monacoInstance: any;
 onMounted(async () => {
-  const [monaco] = await Promise.all([
-    import("monaco-editor/esm/vs/editor/editor.api"),
-    import(
-      "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution"
-    ),
-    import(
-      "monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution"
-    ),
-    import("monaco-editor/esm/vs/basic-languages/html/html.contribution"),
-    import("monaco-editor/esm/vs/basic-languages/css/css.contribution"),
-  ]);
+  const monaco = await initMonaco();
 
   const isDark = document.documentElement.classList.contains("dark");
   if (!(window as any).monaco) {
@@ -53,8 +43,9 @@ onMounted(async () => {
     language: language,
     automaticLayout: true,
     tabSize: 2,
+    fixedOverflowWidgets: true,
     minimap: { enabled: false },
-    lineNumbers: "off",
+    // lineNumbers: "off",
     scrollbar: {
       handleMouseWheel: false,
     },
@@ -83,7 +74,7 @@ onMounted(async () => {
   );
   // 防抖
   monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
-
+  monacoJSXHighlighter.addJSXCommentCommand();
   monacoInstance.onDidChangeModelContent((e: any) => {
     const newValue = monacoInstance.getValue();
     emit("change", newValue);

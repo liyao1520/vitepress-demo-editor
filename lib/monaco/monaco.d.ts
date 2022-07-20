@@ -10,3 +10,6 @@ declare module "monaco-jsx-highlighter" {
   export const JSXTypes: any;
   export default any;
 }
+declare module "monaco-editor/esm/vs/*";
+declare module "@vue/runtime-core/dist/runtime-core.d.ts?raw";
+declare module "*.text?raw";
