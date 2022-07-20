@@ -1,13 +1,14 @@
 import { templateWrap } from "./templateWrap";
-import { getApp, initialApp, initialVue } from "../memo";
+import { initialApp, initialVue } from "../memo";
 import { handleImportMaps } from "./importMaps";
 import * as compiler from "vue/compiler-sfc";
-import { App } from "vue";
 
 type ErrorFn = (errors: (compiler.CompilerError | SyntaxError)[]) => void;
 let g_id = 0;
 initialVue();
 initialApp();
+const langs = ["jsx", "vue", "tsx"] as const;
+type Lang = typeof langs[number];
 export default class Compiler {
   private selector: string;
   private scriptEl: HTMLScriptElement | null = null;
@@ -16,8 +17,17 @@ export default class Compiler {
   private _id = g_id;
   private styleEl = document.createElement("style");
   private onError: ErrorFn = () => {};
-  constructor(selector: string, onError?: ErrorFn) {
+  private lang: Lang;
+  private isTypeScript = false;
+  constructor(
+    selector: string,
+    lang: string,
+    isTypeScript = false,
+    onError?: ErrorFn
+  ) {
     this.selector = selector;
+    this.lang = langs.includes(lang as Lang) ? (lang as Lang) : "vue";
+    this.isTypeScript = isTypeScript;
     if (onError) {
       this.onError = onError;
     }
@@ -33,49 +43,89 @@ export default class Compiler {
         e.filename
       );
       if (isSelfError) {
-        this.onError([e as any]);
+        this.handleError([e as any]);
       }
     });
   }
-  async compileCode(code: string): Promise<string | undefined> {
+  private async compilerSFC(code: string): Promise<string> {
     code = templateWrap(code);
+    const hasScript = /\<script.*?\>.*\<\/script.*?\>/s.test(code);
+    if (!hasScript) {
+      code = `${code}
+         <script>export default {}</script>
+         `;
+    }
 
+    const ast = compiler.parse(code, { filename: "none" });
+
+    // 如果有错误,给出错误信息
+    if (ast.errors) {
+      this.handleError(ast.errors);
+    }
+
+    const id = generateID();
+
+    const template = this.compilerTemplate(ast, id);
+
+    this.templateUrl = createObjectURL(template);
+
+    const script = await this.compilerScript(ast, id);
+
+    this.compilerStyle(ast, id);
+
+    return script;
+  }
+  async compileCode(code: string): Promise<undefined | string> {
+    // 清空之前的 ObjectURL
+    this.revokeAllObjectURL();
+    // 创建createScriptEl
+    this.createScriptEl();
     try {
-      // 清空之前的 ObjectURL
-      this.revokeAllObjectURL();
-      // 创建createScriptEl
-      this.createScriptEl();
-      const hasSciprt = /\<script.*?\>.*\<\/script.*?\>/s.test(code);
-
-      if (!hasSciprt) {
-        code = `${code}
-        <script>export default {}</script>
-        `;
+      let App: string | undefined = "";
+      if (this.lang === "jsx" || this.lang === "tsx") {
+        App = await this.compilerJsx(code);
+      } else if (this.lang === "vue") {
+        App = await this.compilerSFC(code);
       }
-
-      const ast = compiler.parse(code, { filename: "none" });
-
-      // 如果有错误,给出错误信息
-      this.handleError(ast);
-
-      const id = generateID();
-
-      const template = this.compilerTemplate(ast, id);
-
-      this.templateUrl = createObjectURL(template);
-
-      const script = this.compilerScript(ast, id);
-      this.compilerStyle(ast, id);
-      if (!script) {
+      if (!App) {
         return;
       }
-      this.scriptUrl = createObjectURL(script);
-
+      this.scriptUrl = createObjectURL(App);
       // 运行代码
-      return this.runCode();
+      const res = this.runCode();
+      this.clearError();
+      return res;
     } catch (e) {
-      this.onError([e as any]);
+      this.handleError([e as any]);
       throw e;
+    }
+  }
+  private async compilerJsx(code: string): Promise<string | undefined> {
+    const [transform, vue3JSXPlugin] = await Promise.all([
+      loadBabelTransform(),
+      loadVueJsxPlugin(),
+    ]);
+    const plugins: any[] = [vue3JSXPlugin];
+
+    if (this.isTypeScript) {
+      const ts = await loadTsPlugin();
+      plugins.push([ts, { isTSX: true }]);
+    }
+    try {
+      const res = transform(code, {
+        plugins,
+      });
+
+      const transformCode = handleImportMaps(res.code);
+
+      if (!/export default/.test(transformCode)) {
+        this.handleError([new Error("No default export found")]);
+        return;
+      }
+
+      return transformCode;
+    } catch (err: any) {
+      this.handleError(Array.isArray(err) ? err : [err]);
     }
   }
   private createScriptEl() {
@@ -97,16 +147,17 @@ export default class Compiler {
       slotted: ast.descriptor.slotted,
     });
     const template = temp.code;
-    // console.log(template)
 
     return handleImportMaps(template);
   }
-  private compilerScript(ast: compiler.SFCParseResult, id: string) {
+  private async compilerScript(ast: compiler.SFCParseResult, id: string) {
     const { descriptor } = ast;
-
+    this.isTypeScript =
+      descriptor.script?.lang === "ts" || descriptor.scriptSetup?.lang === "ts";
     const res = compiler.compileScript(descriptor, {
       id,
       sourceMap: true,
+      babelParserPlugins: this.isTypeScript ? ["typescript"] : [],
       templateOptions: {
         id,
         source: ast.descriptor.template?.content || "",
@@ -116,21 +167,33 @@ export default class Compiler {
         compilerOptions: {
           scopeId: `data-v-${id}`,
           mode: "module",
+          expressionPlugins: this.isTypeScript ? ["typescript"] : [],
         },
       },
     });
 
-    let script = res.content;
-    if (!script) {
+    let transformCode = res.content;
+    console.log(transformCode);
+
+    if (this.isTypeScript) {
+      const [transform, ts] = await Promise.all([
+        loadBabelTransform(),
+        loadTsPlugin(),
+      ]);
+      transformCode = transform(transformCode, {
+        plugins: [[ts]],
+      }).code;
+    }
+    if (!transformCode) {
       return "";
     }
 
-    script = script.replace("export default", "const _script =");
-    script = handleImportMaps(script);
+    transformCode = transformCode.replace("export default", "const _script =");
+    transformCode = handleImportMaps(transformCode);
 
     return `
       import {render as __render} from "${this.templateUrl}"
-      ${script}
+      ${transformCode}
       _script.render = __render;
       _script.components = _app._context.components;
       _script.__scopeId = "data-v-${id}"; //节点的 __scopeId
@@ -163,11 +226,15 @@ export default class Compiler {
     if (this.scriptEl) {
       this.scriptEl.innerHTML = main;
     }
+    console.log(main);
 
     return main;
   }
-  private handleError(ast: compiler.SFCParseResult) {
-    this.onError(ast.errors);
+  private handleError(errors: (compiler.CompilerError | SyntaxError)[]) {
+    this.onError(errors);
+  }
+  private clearError() {
+    this.onError([]);
   }
   private handleRunTimeError() {
     // window 错误捕获
@@ -178,13 +245,7 @@ export default class Compiler {
         component: any,
         info: any
       ) => {
-        if (Array.isArray(err)) {
-          this.onError(err);
-        } else {
-          // vue 全局捕获的错误
-          // err.name = "appErrorHandler";
-          this.onError([err]);
-        }
+        this.handleError(Array.isArray(err) ? err : [err]);
         throw err;
       }; //全局可挂载一个错误函数,用于捕获执行时的报错
     }
@@ -210,4 +271,20 @@ function createObjectURL(content: any, type?: string): string {
 }
 function generateID() {
   return Math.random().toString(36).slice(2, 12);
+}
+
+async function loadTsPlugin() {
+  return await import("@babel/plugin-transform-typescript").then(
+    (m) => m.default
+  );
+}
+
+async function loadBabelTransform() {
+  return await import("@babel/standalone").then(({ transform }) => transform);
+}
+
+async function loadVueJsxPlugin() {
+  return await import("@vue/babel-plugin-jsx").then((module) => {
+    return module.default;
+  });
 }

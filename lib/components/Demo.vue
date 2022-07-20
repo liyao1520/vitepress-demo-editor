@@ -11,7 +11,7 @@
     >
       <div class="view" :id="randomId" ref="viewRef"></div>
       <div class="error" v-if="errors.length">
-        <div v-for="e in errors.slice(0, 5)">{{ e.message }}</div>
+        <div v-for="e in errors">{{ e.message }}</div>
         <div v-if="errors.length > 5">...</div>
       </div>
     </div>
@@ -48,6 +48,7 @@
         }"
         :initial-value="$props.initialValue"
         @change="handleChange"
+        :language="$props.lang"
         ref="editRef"
       >
         <template #error v-if="errors.length">
@@ -116,7 +117,10 @@ const { ms, defaultDirection, handleError } = inject(ConfigToken, {
 const props = defineProps<{
   initialValue: string;
   direction?: "column" | "row";
+  lang: "vue" | "jsx" | string;
 }>();
+
+const isTypeScript = "tsx" === props.lang;
 
 const direction = props.direction ? props.direction : defaultDirection;
 
@@ -144,15 +148,20 @@ onMounted(async () => {
   const { default: Compiler } = await import("../compiler");
   randomId.value = "id_" + Math.random().toString(36).slice(2, 12);
   await nextTick();
-  compiler = new Compiler(`#${randomId.value}`, (errs) => {
-    // 错误处理
-    errors.value = errs;
-    handleError?.(errs);
-  });
+  compiler = new Compiler(
+    `#${randomId.value}`,
+    props.lang,
+    isTypeScript,
+    (errs) => {
+      // 错误处理
+      errors.value = errs;
+      handleError?.(errs);
+    }
+  );
   compiler.compileCode(props.initialValue);
   autoHeight();
-  let obsever = new MutationObserver(autoHeight);
-  if (viewRef.value) obsever.observe(viewRef.value, { childList: true });
+  let observer = new MutationObserver(autoHeight);
+  if (viewRef.value) observer.observe(viewRef.value, { childList: true });
 });
 
 const debounce = (fn: (...args: any[]) => any, wait: number) => {
@@ -249,6 +258,8 @@ const handleChange = (content: string) => {
   padding: 15px;
   opacity: 0.86;
   font-size: 12px;
+  white-space: pre;
+  overflow: auto;
 }
 .error > div {
   margin: 5px 0;
