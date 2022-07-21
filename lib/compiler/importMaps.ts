@@ -11,6 +11,7 @@ export function handleImportMaps(script: string) {
 
   if (!_window.importMaps) _window.importMaps = importMaps;
   script = handleDefault(script);
+
   script = script.replace(
     /import(.*?)from\s+['"](.*?)['"]/g,
     (match, p1, p2) => {
@@ -32,8 +33,10 @@ export function handleImportMaps(script: string) {
 }
 
 function handleDefault(script: string) {
-  return script.replace(/import(.*?)from\s+['"]vue['"]/g, (match, p1) => {
-    p1 = p1.replace(/\sas\s/g, ":");
-    return `const ${p1} = _vue`;
-  });
+  return script
+    .replace(/import(.*?)from\s+['"]vue['"]/g, (match, p1) => {
+      p1 = p1.replace(/\sas\s/g, ":");
+      return `const ${p1} = _vue`;
+    })
+    .replace(/import 'vue'/g, ""); // import {} from 'vue' ->
 }

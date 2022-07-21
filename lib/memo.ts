@@ -1,6 +1,7 @@
 // 由于 vitepress 打包先在node上运行,所以要先把这些值缓存下来,到浏览器环境再使用
 
 import { App } from "vue";
+import { isObject } from ".";
 
 let vue = {}; // 当前 vue
 let app = {}; // 当前实例
@@ -21,17 +22,37 @@ export function setApp(_app: App) {
 export function getApp() {
   return app;
 }
-export function initialVue() {
+export function initialGlobalVariable() {
+  initialVue();
+  initialApp();
+  // 防止 babel 报错
+  initialBabel();
+}
+function initialVue() {
   const w = window as any;
   if (w["_vue"]) return;
   w["_vue"] = vue;
-  // Object.keys(vue).forEach((key) => {
-  //   window["_vue"][key] = vue[key];
-  // });
 }
 
-export function initialApp() {
+function initialApp() {
   const w = window as any;
   if (w["_app"]) return;
   w["_app"] = app;
+}
+
+function initialBabel() {
+  const w = window as any;
+  if (isObject(w["process"])) {
+    Object.assign(w["process"], {
+      env: { BABEL_TYPES_8_BREAKING: false },
+    });
+  } else {
+    w["process"] = {
+      env: {
+        BABEL_TYPES_8_BREAKING: false,
+      },
+      platform: "darwin",
+    };
+  }
+  w["Buffer"] = { isBuffer: undefined };
 }

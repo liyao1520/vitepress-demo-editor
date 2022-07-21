@@ -1,10 +1,10 @@
-import container from "markdown-it-container";
-const markDownPlugin = function (md: any) {
+const container = require("markdown-it-container");
+const markDownPlugin = function (md) {
   md.use(container, "demo", {
-    validate(params: any) {
+    validate(params) {
       return params.trim().match(/^demo\s*(.*)$/);
     },
-    render(tokens: any, idx: any) {
+    render(tokens, idx) {
       if (tokens[idx].nesting === 1) {
         // const description = m && m.length > 1 ? m[1] : ''
         const content =
@@ -25,4 +25,4 @@ const markDownPlugin = function (md: any) {
     },
   });
 };
-export default markDownPlugin;
+module.exports = markDownPlugin;

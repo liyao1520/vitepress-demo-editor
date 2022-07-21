@@ -1,20 +1,27 @@
 /* __imports__ */
 
 import vueTypes from "@vue/runtime-core/dist/runtime-core.d.ts?raw";
+
 import jsx from "./jsx.text?raw";
+let firstIn = true;
+let onMonacoCreatedCallback: null | ((m: IMonaco) => void);
 export default async function init() {
   const [monaco] = await Promise.all([
-    import("monaco-editor"),
+    import("monaco-editor-ex"),
     import(
-      "monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution"
+      "monaco-editor-ex/esm/vs/basic-languages/javascript/javascript.contribution"
     ),
     import(
-      "monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution"
+      "monaco-editor-ex/esm/vs/basic-languages/typescript/typescript.contribution"
     ),
-    import("monaco-editor/esm/vs/basic-languages/html/html.contribution"),
-    import("monaco-editor/esm/vs/basic-languages/css/css.contribution"),
+    import("monaco-editor-ex/esm/vs/basic-languages/html/html.contribution"),
+    import("monaco-editor-ex/esm/vs/basic-languages/css/css.contribution"),
   ]);
 
+  if (firstIn && typeof onMonacoCreatedCallback === "function") {
+    firstIn = false;
+    onMonacoCreatedCallback(monaco);
+  }
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     target: monaco.languages.typescript.ScriptTarget.Latest,
     allowNonTsExtensions: true,
@@ -40,6 +47,7 @@ export default async function init() {
 `,
     "ts:vue"
   );
+
   await Promise.all([
     // load workers
     (async () => {
@@ -48,9 +56,13 @@ export default async function init() {
         { default: HtmlWorker },
         { default: TsWorker },
       ] = await Promise.all([
-        import("monaco-editor/esm/vs/editor/editor.worker?worker"),
-        import("monaco-editor/esm/vs/language/html/html.worker?worker"),
-        import("monaco-editor/esm/vs/language/typescript/ts.worker?worker"),
+        import("monaco-editor-ex/esm/vs/editor/editor.worker?worker&inline"),
+        import(
+          "monaco-editor-ex/esm/vs/language/html/html.worker?worker&inline"
+        ),
+        import(
+          "monaco-editor-ex/esm/vs/language/typescript/ts.worker?worker&inline"
+        ),
       ]);
 
       // @ts-expect-error
@@ -66,4 +78,9 @@ export default async function init() {
     })(),
   ]);
   return monaco;
+}
+
+export function onMonacoCreated(fn: (monaco: IMonaco) => void) {
+  console.log(fn);
+  onMonacoCreatedCallback = fn;
 }

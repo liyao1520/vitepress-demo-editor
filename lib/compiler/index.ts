@@ -1,12 +1,13 @@
 import { templateWrap } from "./templateWrap";
-import { initialApp, initialVue } from "../memo";
+import { initialGlobalVariable } from "../memo";
 import { handleImportMaps } from "./importMaps";
 import * as compiler from "vue/compiler-sfc";
 
 type ErrorFn = (errors: (compiler.CompilerError | SyntaxError)[]) => void;
 let g_id = 0;
-initialVue();
-initialApp();
+
+initialGlobalVariable();
+
 const langs = ["jsx", "vue", "tsx"] as const;
 type Lang = typeof langs[number];
 export default class Compiler {
@@ -173,7 +174,6 @@ export default class Compiler {
     });
 
     let transformCode = res.content;
-    console.log(transformCode);
 
     if (this.isTypeScript) {
       const [transform, ts] = await Promise.all([
@@ -226,7 +226,6 @@ export default class Compiler {
     if (this.scriptEl) {
       this.scriptEl.innerHTML = main;
     }
-    console.log(main);
 
     return main;
   }
