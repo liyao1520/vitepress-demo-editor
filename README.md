@@ -4,6 +4,16 @@
 
 一个 `vitepress` 文档插件,可以帮助你在编写文档的时候增加 `Vue` 示例,通常使用在组件库展示,支持在线编辑演示源代码且视图实时更新
 
+### 支持
+
+- 语言 vue sfc
+
+- 语言 jsx/tsx
+
+- 编辑器语法提示
+
+- 编辑器代码高亮
+
 ## demo 预览
 
 [promiseui](http://ui.coderly.top/components/button/) (一个 vue3 组件库)
@@ -22,15 +32,16 @@
 // .vitepress/theme/index.js
 
 import { vuePlugin } from "vitepress-demo-editor";
-import "vitepress-demo-editor/es/style.css";
+import "vitepress-demo-editor/dist/style.css";
 
 export default {
   // ...otherConfig
   enhanceApp({ app }) {
     app.use(vuePlugin, {
-      defaultDirection: "row", //default value
-      ms: 30, // default value
+      defaultDirection: "row", // 默认显示方向
+      ms: 30, // 编辑器防抖时间
       handleError(errs) {}, // 错误信息
+      onMonacoCreated(monaco) {}, // monaco 创建成功时触发
     });
   },
 };
@@ -40,7 +51,7 @@ export default {
 
 ```js
 //.vitepress/config.js
-import markdownPlugin from "vitepress-demo-editor/cjs/markdownPlugin";
+import markdownPlugin from "vitepress-demo-editor/markdownPlugin";
 const config = {
   // ...otherConfig
   markdown: {
@@ -105,7 +116,41 @@ const text = ref("");
 :::
 ````
 
-### 高级用法
+### jsx
+
+需要再安装 `@babel/standalone`
+
+#### 安装
+
+`npm install @babel/standalone`
+
+#### 配置 vite.config.js
+
+```js
+// docs/vite.config.js
+export default {
+  resolve: {
+    alias: {
+      assert: "browser-assert",
+      path: "path-browserify",
+    },
+  },
+};
+```
+
+#### Demo 预览
+
+[promiseui-table-jsx](http://ui.coderly.top/components/table/#jsx-%E5%86%99%E6%B3%95)
+
+### tsx 和 \<script lang="ts">
+
+需要再安装 `@babel/plugin-transform-typescript`
+
+#### 安装
+
+`npm install @babel/plugin-transform-typescript`
+
+## 高级用法
 
 ### importMap
 
@@ -181,7 +226,41 @@ export default defineConfig({
 });
 ```
 
-#### 黑暗模式
+### 编辑器添加库提示
+
+在`tsx` / `jsx` 中, 默认有 `vue` `import` 提示
+
+![20220721184128](http://cdn.coderly.top/imgs/20220721184128.png)
+
+如果想添加其他库代码提示 ,以`vue-promiseui`库为例子
+
+```js
+import { vuePlugin } from "vitepress-demo-editor";
+import "vitepress-demo-editor/dist/style.css";
+// 找到该库的类型文件,在vite中 以 ?raw方式导入
+import promiseuiType from "promiseui-vue/dist/promiseui/vue-promiseui.d.ts?raw";
+
+export default {
+  // ...otherConfig
+  enhanceApp({ app }) {
+    app.use(vuePlugin, {
+      onMonacoCreated(monaco) {
+        // 在此处 添加库提示
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(
+          `
+          declare module 'promiseui-vue' { 
+            ${promiseuiType} 
+          }
+          `,
+          "promiseui-vue"
+        );
+      }, //
+    });
+  },
+};
+```
+
+### 黑暗模式
 
 `html` 标签 `class` 有 `dark` 会自动变为黑暗模式
 

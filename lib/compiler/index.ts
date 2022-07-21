@@ -102,10 +102,8 @@ export default class Compiler {
     }
   }
   private async compilerJsx(code: string): Promise<string | undefined> {
-    const [transform, vue3JSXPlugin] = await Promise.all([
-      loadBabelTransform(),
-      loadVueJsxPlugin(),
-    ]);
+    const transform = await loadBabelTransform();
+    const vue3JSXPlugin = await loadVueJsxPlugin();
     const plugins: any[] = [vue3JSXPlugin];
 
     if (this.isTypeScript) {
@@ -176,10 +174,8 @@ export default class Compiler {
     let transformCode = res.content;
 
     if (this.isTypeScript) {
-      const [transform, ts] = await Promise.all([
-        loadBabelTransform(),
-        loadTsPlugin(),
-      ]);
+      const transform = await loadBabelTransform();
+      const ts = await loadTsPlugin();
       transformCode = transform(transformCode, {
         plugins: [[ts]],
       }).code;

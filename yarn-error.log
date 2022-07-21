@@ -1,8 +1,8 @@
 Arguments: 
-  E:\nodejs\node.exe E:\node_cache\node_global\node_modules\yarn\bin\yarn.js build
+  E:\nodejs\node.exe E:\node_cache\node_global\node_modules\yarn\bin\yarn.js add @babel-core
 
 PATH: 
-  C:\Users\15201\AppData\Local\Temp\yarn--1658387690405-0.6446307706515173;E:\project\vitepress-demo-editor\node_modules\.bin;C:\Users\15201\AppData\Local\Yarn\Data\link\node_modules\.bin;E:\libexec\lib\node_modules\npm\bin\node-gyp-bin;E:\lib\node_modules\npm\bin\node-gyp-bin;E:\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\15201\AppData\Local\Temp\yarn--1658387690106-0.6082408102315104;E:\project\vitepress-demo-editor\node_modules\.bin;C:\Users\15201\AppData\Local\Yarn\Data\link\node_modules\.bin;E:\libexec\lib\node_modules\npm\bin\node-gyp-bin;E:\lib\node_modules\npm\bin\node-gyp-bin;E:\nodejs\node_modules\npm\bin\node-gyp-bin;E:\python\Scripts\;E:\python\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NGX;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\nodejs\node_global;"%JAVA_HOME8u241%\bin;%JAVA_HOME8u241%\jre\bin;";F:\应用软件\Git\cmd;F:\yarn\bin\;E:\development_environment\MySQL\bin;E:\开发工具\Microsoft VS Code Insiders\bin;C:\Program Files (x86)\ZeroTier\One\;F:\应用软件\互传\EasyShare\x86\;F:\应用软件\互传\EasyShare\x64\;E:\node_cache\node_global\node_modules;E:\yarnData\global\bin;E:\mysql\mysql-8.0.27-winx64;E:\mysql\mysql-8.0.27-winx64\bin;E:\开发工具\微信web开发者工具\dll;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;E:\Anaconda3;E:\Anaconda3\Library\mingw-w64\bin;E:\Anaconda3\Library\usr\bin;E:\Anaconda3\Library\bin;E:\Anaconda3\Scripts;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;E:\development environment\Node.js\node_global;C:\Users\15201\AppData\Local\Yarn\bin;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;_cache\node_global;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;
+  E:\python\Scripts\;E:\python\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NGX;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\nodejs\node_global;"%JAVA_HOME8u241%\bin;%JAVA_HOME8u241%\jre\bin;";F:\应用软件\Git\cmd;F:\yarn\bin\;E:\development_environment\MySQL\bin;E:\开发工具\Microsoft VS Code Insiders\bin;C:\Program Files (x86)\ZeroTier\One\;F:\应用软件\互传\EasyShare\x86\;F:\应用软件\互传\EasyShare\x64\;E:\node_cache\node_global\node_modules;E:\yarnData\global\bin;E:\mysql\mysql-8.0.27-winx64;E:\mysql\mysql-8.0.27-winx64\bin;E:\开发工具\微信web开发者工具\dll;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;E:\Anaconda3;E:\Anaconda3\Library\mingw-w64\bin;E:\Anaconda3\Library\usr\bin;E:\Anaconda3\Library\bin;E:\Anaconda3\Scripts;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;E:\development environment\Node.js\node_global;C:\Users\15201\AppData\Local\Yarn\bin;C:\Users\15201\AppData\Local\Microsoft\WindowsApps;_cache\node_global;E:\nvm;E:\nodejs;E:\node_cache\node_global;E:\dev_tools\Microsoft VS Code\bin;
 
 Yarn version: 
   1.22.17
@@ -14,26 +14,38 @@ Platform:
   win32 x64
 
 Trace: 
-  TypeError: Cannot create property '-registry-npmjs-org' on string '{"-registry-npmjs-org":""}'
-      at set (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:53943:28)
-      at set (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:53957:14)
-      at set (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:53937:16)
-      at Function.objectPath.set (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:53990:14)
-      at NpmRegistry.mergeEnv (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:96231:18)
-      at NpmRegistry.<anonymous> (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:31942:12)
-      at Generator.next (<anonymous>)
-      at step (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:310:30)
-      at E:\node_cache\node_global\node_modules\yarn\lib\cli.js:328:14
-      at new Promise (<anonymous>)
+  Error: https://registry.npmjs.org/@babel-core: Request "https://registry.npmjs.org/@babel-core" returned a 405
+      at Request.params.callback [as _callback] (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:67038:18)
+      at Request.self.callback (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:140883:22)
+      at Request.emit (node:events:390:28)
+      at Request.<anonymous> (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:141855:10)
+      at Request.emit (node:events:390:28)
+      at IncomingMessage.<anonymous> (E:\node_cache\node_global\node_modules\yarn\lib\cli.js:141777:12)
+      at Object.onceWrapper (node:events:509:28)
+      at IncomingMessage.emit (node:events:402:35)
+      at endReadableNT (node:internal/streams/readable:1343:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
     "name": "vitepress-demo-editor",
-    "version": "2.0.1",
+    "version": "3.0.0-beta.0",
     "description": "a vitepress plugin",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js"
+      },
+      "./markdownPlugin": {
+        "require": "./markdownPlugin/index.js",
+        "type": "./markdownPlugin.d.ts"
+      },
+      "./dist/*": {
+        "import": "./dist/*"
+      }
+    },
     "license": "MIT",
     "keywords": [
       "vite",
@@ -56,7 +68,7 @@ npm manifest:
       "docs:dev": "vitepress dev docs",
       "docs:build": "vitepress build docs",
       "docs:serve": "vitepress serve docs",
-      "build": "yarn build"
+      "build": "vite build"
     },
     "devDependencies": {
       "@rollup/plugin-typescript": "^8.3.3",
