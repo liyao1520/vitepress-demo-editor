@@ -6,9 +6,9 @@
 
 ### 支持
 
-- 语言 vue sfc
+- 支持 vue sfc
 
-- 语言 jsx/tsx
+- 支持 jsx/tsx
 
 - 编辑器语法提示
 
@@ -65,14 +65,16 @@ export default config;
 
 ### 在 markdown 中使用
 
+### sfc
+
 ````md
 :::demo
 
 ```vue
 <template>
-  <button class="demo-btn" @click="count--">➖</button>
+  <button class="demo-btn" @click="count--">-</button>
   <b class="demo-count" :class="{ red: count >= 3 }">{{ count }}</b>
-  <button class="demo-btn" @click="count++">➕</button>
+  <button class="demo-btn" @click="count++">+</button>
 </template>
 <script setup>
 import { ref } from "vue";
@@ -116,39 +118,58 @@ const text = ref("");
 :::
 ````
 
-### jsx
-
-需要再安装 `@babel/standalone 和 @babel/core`
-
-#### 安装
-
-`npm install @babel/standalone @babel/core`
+### jsx/tsx
 
 #### 配置 vite.config.js
 
 ```js
 // docs/vite.config.js
-export default {
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  define: {
+    "process.env.BABEL_TYPES_8_BREAKING": "false",
+    "process.platform": '"darwin"',
+    "Buffer.isBuffer": "undefined",
+  },
   resolve: {
     alias: {
       assert: "browser-assert",
       path: "path-browserify",
     },
   },
-};
+});
 ```
+
+#### 使用
+
+#### jsx
+
+````md
+:::demo column
+
+```jsx
+<!--  code -->
+```
+
+:::
+````
+
+#### tsx
+
+````md
+:::demo column
+
+```tsx
+<!--  code -->
+```
+
+:::
+````
 
 #### Demo 预览
 
 [promiseui-table-jsx](http://ui.coderly.top/components/table/#jsx-%E5%86%99%E6%B3%95)
-
-### tsx 和 \<script lang="ts">
-
-需要再安装 `@babel/plugin-transform-typescript`
-
-#### 安装
-
-`npm install @babel/plugin-transform-typescript`
 
 ## 打包报错?
 
@@ -246,7 +267,7 @@ export default defineConfig({
 
 ### 编辑器添加库提示
 
-在`tsx` / `jsx` 中, 默认有 `vue` `import` 提示
+在`tsx` / `jsx` 中, 默认自带 `import` `vue` 有提示
 
 ![20220721184128](http://cdn.coderly.top/imgs/20220721184128.png)
 
