@@ -269,13 +269,19 @@ function generateID() {
 }
 
 async function loadTsPlugin() {
-  return await import("@babel/plugin-transform-typescript").then(
-    (m) => m.default
-  );
+  return await import("@babel/plugin-transform-typescript").then((m) => {
+    return m.default;
+  });
 }
 
 async function loadBabelTransform() {
-  return await import("@babel/standalone").then(({ transform }) => transform);
+  return await import("@babel/standalone").then((res) => {
+    if (res.default) {
+      return res.default.transform;
+    } else {
+      return res.transform;
+    }
+  });
 }
 
 async function loadVueJsxPlugin() {

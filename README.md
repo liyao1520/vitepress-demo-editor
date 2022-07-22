@@ -118,11 +118,11 @@ const text = ref("");
 
 ### jsx
 
-需要再安装 `@babel/standalone`
+需要再安装 `@babel/standalone 和 @babel/core`
 
 #### 安装
 
-`npm install @babel/standalone`
+`npm install @babel/standalone @babel/core`
 
 #### 配置 vite.config.js
 

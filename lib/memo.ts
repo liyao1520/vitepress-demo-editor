@@ -26,7 +26,6 @@ export function initialGlobalVariable() {
   initialVue();
   initialApp();
   // 防止 babel 报错
-  initialBabel();
 }
 function initialVue() {
   const w = window as any;
@@ -38,21 +37,4 @@ function initialApp() {
   const w = window as any;
   if (w["_app"]) return;
   w["_app"] = app;
-}
-
-function initialBabel() {
-  const w = window as any;
-  if (isObject(w["process"])) {
-    Object.assign(w["process"], {
-      env: { BABEL_TYPES_8_BREAKING: false },
-    });
-  } else {
-    w["process"] = {
-      env: {
-        BABEL_TYPES_8_BREAKING: false,
-      },
-      platform: "darwin",
-    };
-  }
-  w["Buffer"] = { isBuffer: undefined };
 }

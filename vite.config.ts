@@ -5,7 +5,6 @@ import dts from "vite-plugin-dts";
 import { resolve } from "path";
 
 export default defineConfig({
-  base: "/",
   resolve: {
     alias: {
       assert: "browser-assert",
@@ -16,7 +15,6 @@ export default defineConfig({
     vue(),
     dts({
       include: ["lib"],
-      outputDir: "dist",
     }),
   ],
   build: {
@@ -24,26 +22,23 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "lib", "index.ts"),
       name: "demoEditor",
-      fileName: (format) => `[name].js`,
-      formats: ["es"],
+      fileName: (format) => `[name].[format].js`,
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
       external: [
         "vue",
-        "@vue/babel-plugin-jsx",
+        // "@vue/babel-plugin-jsx",
+        // "@babel/standalone",
+        // "@babel/plugin-transform-typescript",
         "vue/compiler-sfc",
-        "@babel/standalone",
-        "@babel/plugin-transform-typescript",
         "monaco-editor-ex/esm/vs/editor/editor.worker",
         "monaco-editor-ex/esm/vs/language/html/html.worker",
         "monaco-editor-ex/esm/vs/language/typescript/ts.worker",
       ],
-      output: {
-        dir: "dist",
-      },
     },
   },
-  optimizeDeps: {
-    include: ["browser-assert", "path-browserify"],
-  },
+  // optimizeDeps: {
+  //   include: ["browser-assert", "path-browserify"],
+  // },
 });

@@ -1,22 +1,12 @@
 /* __imports__ */
 
 import vueTypes from "@vue/runtime-core/dist/runtime-core.d.ts?raw";
+import jsxTypes from "@vue/runtime-dom/dist/runtime-dom.d.ts?raw";
 
-import jsx from "./jsx.text?raw";
 let firstIn = true;
 let onMonacoCreatedCallback: null | ((m: IMonaco) => void);
 export default async function init() {
-  const [monaco] = await Promise.all([
-    import("monaco-editor-ex"),
-    import(
-      "monaco-editor-ex/esm/vs/basic-languages/javascript/javascript.contribution"
-    ),
-    import(
-      "monaco-editor-ex/esm/vs/basic-languages/typescript/typescript.contribution"
-    ),
-    import("monaco-editor-ex/esm/vs/basic-languages/html/html.contribution"),
-    import("monaco-editor-ex/esm/vs/basic-languages/css/css.contribution"),
-  ]);
+  const monaco = await import("monaco-editor-ex");
 
   if (firstIn && typeof onMonacoCreatedCallback === "function") {
     firstIn = false;
@@ -29,10 +19,8 @@ export default async function init() {
     module: monaco.languages.typescript.ModuleKind.CommonJS,
     noEmit: true,
     esModuleInterop: true,
-    jsx: monaco.languages.typescript.JsxEmit.React,
-    reactNamespace: "React",
+    jsx: monaco.languages.typescript.JsxEmit.Preserve,
     allowJs: true,
-    typeRoots: ["node_modules/@types"],
   });
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
@@ -40,13 +28,16 @@ export default async function init() {
     noSyntaxValidation: false,
   });
 
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(jsx, `jsx`);
   monaco.languages.typescript.typescriptDefaults.addExtraLib(
-    `
-  declare module 'vue' { ${vueTypes} }
-`,
-    "ts:vue"
+    jsxTypes,
+    `jsx:type`
   );
+    monaco.languages.typescript.typescriptDefaults.addExtraLib(
+      `
+    declare module 'vue' { ${vueTypes} }
+  `,
+      "ts:vue"
+    );
 
   await Promise.all([
     // load workers
@@ -81,6 +72,5 @@ export default async function init() {
 }
 
 export function onMonacoCreated(fn: (monaco: IMonaco) => void) {
-  console.log(fn);
   onMonacoCreatedCallback = fn;
 }

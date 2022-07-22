@@ -16,6 +16,10 @@ const props = defineProps({
     type: String,
     default: "html",
   },
+  randomId: {
+    required: true,
+    type: String,
+  },
 });
 const emit = defineEmits(["change"]);
 
@@ -23,7 +27,6 @@ const monacoContainer = ref<HTMLDivElement | null>(null);
 let monacoInstance: any;
 onMounted(async () => {
   const monaco = await initMonaco();
-
   const isDark = document.documentElement.classList.contains("dark");
   if (!(window as any).monaco) {
     (window as any).monaco = monaco;
@@ -33,14 +36,15 @@ onMounted(async () => {
   monaco.editor.defineTheme("iDark", iDark as any);
   monaco.editor.defineTheme("iLight", iLight as any);
 
-  const language = ["jsx", "js", "ts", "tsx"].includes(props.language)
-    ? "typescript"
-    : "html";
+  let extension = "html";
+  let language = "html";
+  if (["jsx", "tsx"].includes(props.language)) {
+    extension = "tsx";
+    language = "typescript";
+  }
 
   monacoInstance = monaco.editor.create(monacoContainer.value, {
     theme: isDark ? "iDark" : "iLight",
-    value: props.initialValue,
-    language: language,
     automaticLayout: true,
     tabSize: 2,
     fixedOverflowWidgets: true,
@@ -51,7 +55,14 @@ onMounted(async () => {
     },
     fontSize: 14,
   });
-
+  // 创建模型 文件名不能相同
+  const modelUri = monaco.Uri.file(`${props.randomId}.${extension}`);
+  const codeModel = monaco.editor.createModel(
+    props.initialValue,
+    language,
+    modelUri // Pass the file name to the model here.
+  );
+  monacoInstance.setModel(codeModel);
   const [{ default: MonacoJSXHighlighter, JSXTypes }, { parse }, traverse] =
     await Promise.all([
       import("monaco-jsx-highlighter"),
@@ -75,10 +86,14 @@ onMounted(async () => {
   // 防抖
   monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
   monacoJSXHighlighter.addJSXCommentCommand();
+
+  //---
   monacoInstance.onDidChangeModelContent((e: any) => {
     const newValue = monacoInstance.getValue();
     emit("change", newValue);
   });
+
+  // --- 防止浏览器滚动时,鼠标移动到编辑器上停止滚动,而去滚动编辑器的行为
   monacoInstance.onDidBlurEditorText(() => {
     monacoInstance.updateOptions({
       scrollbar: {
@@ -93,8 +108,8 @@ onMounted(async () => {
       },
     });
   });
-
-  // 黑暗模式设配
+  // ---
+  // --- 黑暗模式设配
   const observer = new MutationObserver((entries) => {
     entries.forEach((mutation) => {
       const target = mutation.target as HTMLHtmlElement;

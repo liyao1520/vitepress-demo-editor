@@ -7,5 +7,5 @@ export interface IConfig {
   ms: number; //代码节流时长
   defaultDirection: "row" | "column";
   handleError?: (err: CompilerError | SyntaxError[]) => void;
-  onMonacoCreated: (monaco: IMonaco) => void;
+  onMonacoCreated?: (monaco: IMonaco) => void;
 }

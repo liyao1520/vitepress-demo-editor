@@ -47,6 +47,7 @@
           minHeight: direction === 'row' ? '200px' : '300px',
         }"
         :initial-value="$props.initialValue"
+        :randomId="randomId"
         @change="handleChange"
         :language="$props.lang"
         ref="editRef"
@@ -130,8 +131,10 @@ const errors = ref<any[]>([]);
 const editHeight = ref<number>(0);
 const viewRef = ref<HTMLDivElement | null>(null);
 const editRef = ref<any>(null);
-const randomId = ref("");
+
 const toolsShow = ref(false);
+
+const randomId = "id_" + Math.random().toString(36).slice(2, 12);
 
 const autoHeight = () => {
   const h = viewRef.value?.clientHeight || 0;
@@ -146,18 +149,13 @@ let compiler: Compiler;
 
 onMounted(async () => {
   const { default: Compiler } = await import("../compiler");
-  randomId.value = "id_" + Math.random().toString(36).slice(2, 12);
+
   await nextTick();
-  compiler = new Compiler(
-    `#${randomId.value}`,
-    props.lang,
-    isTypeScript,
-    (errs) => {
-      // 错误处理
-      errors.value = errs;
-      handleError?.(errs);
-    }
-  );
+  compiler = new Compiler(`#${randomId}`, props.lang, isTypeScript, (errs) => {
+    // 错误处理
+    errors.value = errs;
+    handleError?.(errs);
+  });
   compiler.compileCode(props.initialValue);
   autoHeight();
   let observer = new MutationObserver(autoHeight);
