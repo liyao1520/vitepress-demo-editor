@@ -150,6 +150,24 @@ export default {
 
 `npm install @babel/plugin-transform-typescript`
 
+## 打包报错?
+
+打包可能会报错,提示 ` Error: Missing "./preload-helper" export in "vite" package` ,
+
+原因不清楚,但有解决办法
+
+`ctrl + click 进入报错文件`
+
+![20220722220240](http://cdn.coderly.top/imgs/20220722220240.png)
+
+搜索 `vite/preload-helper` 替换为 `\0vite/preload-helper`
+
+![vite](http://cdn.coderly.top/imgs/vite.png)
+
+`'vite/preload-helper'`->`'\0vite/preload-helper'`
+
+![20220722220759](http://cdn.coderly.top/imgs/20220722220759.png)
+
 ## 高级用法
 
 ### importMap

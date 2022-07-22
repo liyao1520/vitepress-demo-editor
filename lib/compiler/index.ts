@@ -156,7 +156,6 @@ export default class Compiler {
     const res = compiler.compileScript(descriptor, {
       id,
       sourceMap: true,
-      babelParserPlugins: this.isTypeScript ? ["typescript"] : [],
       templateOptions: {
         id,
         source: ast.descriptor.template?.content || "",
@@ -166,7 +165,6 @@ export default class Compiler {
         compilerOptions: {
           scopeId: `data-v-${id}`,
           mode: "module",
-          expressionPlugins: this.isTypeScript ? ["typescript"] : [],
         },
       },
     });

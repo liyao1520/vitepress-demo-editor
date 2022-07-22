@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import dts from "vite-plugin-dts";
+// import dts from "vite-plugin-dts";
 
 import { resolve } from "path";
 
 export default defineConfig({
+  base: "/",
   resolve: {
     alias: {
       assert: "browser-assert",
@@ -13,16 +14,16 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    dts({
-      include: ["lib"],
-    }),
+    // dts({
+    //   include: ["lib"],
+    // }),
   ],
   build: {
     cssCodeSplit: false,
     lib: {
       entry: resolve(__dirname, "lib", "index.ts"),
       name: "demoEditor",
-      fileName: (format) => `[name].[format].js`,
+      fileName: (format) => `[name].${format}.js`,
       formats: ["es", "cjs"],
     },
     rollupOptions: {
@@ -31,14 +32,11 @@ export default defineConfig({
         // "@vue/babel-plugin-jsx",
         // "@babel/standalone",
         // "@babel/plugin-transform-typescript",
-        "vue/compiler-sfc",
-        "monaco-editor-ex/esm/vs/editor/editor.worker",
-        "monaco-editor-ex/esm/vs/language/html/html.worker",
-        "monaco-editor-ex/esm/vs/language/typescript/ts.worker",
+        // "vue/compiler-sfc",
       ],
     },
   },
-  // optimizeDeps: {
-  //   include: ["browser-assert", "path-browserify"],
-  // },
+  optimizeDeps: {
+    include: ["browser-assert", "path-browserify", "@babel/core"],
+  },
 });

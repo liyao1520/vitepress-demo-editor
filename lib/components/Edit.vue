@@ -63,29 +63,6 @@ onMounted(async () => {
     modelUri // Pass the file name to the model here.
   );
   monacoInstance.setModel(codeModel);
-  const [{ default: MonacoJSXHighlighter, JSXTypes }, { parse }, traverse] =
-    await Promise.all([
-      import("monaco-jsx-highlighter"),
-      import("@babel/parser"),
-      import("@babel/traverse"),
-    ]);
-  // 高亮代码
-  function changeHighlighterClass(key: string, value: string) {
-    JSXTypes[key].options.inlineClassName = value;
-  }
-  changeHighlighterClass("JSXBracket", "mtk1");
-  changeHighlighterClass("JSXIdentifier", "mtk6");
-  changeHighlighterClass("JSXText", "mtk1");
-  changeHighlighterClass("JSXExpressionContainer", "mtk1");
-  const monacoJSXHighlighter = new MonacoJSXHighlighter(
-    monaco,
-    parse,
-    traverse,
-    monacoInstance
-  );
-  // 防抖
-  monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
-  monacoJSXHighlighter.addJSXCommentCommand();
 
   //---
   monacoInstance.onDidChangeModelContent((e: any) => {
