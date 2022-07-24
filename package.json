@@ -1,7 +1,7 @@
 {
   "name": "vitepress-demo-editor",
-  "version": "3.0.0",
-  "description": "一个 vitepress 文档插件,可以帮助你在编写文档的时候增加 Vue 示例,通常使用在组件库展示,支持在线编辑演示源代码且视图实时更新",
+  "version": "3.0.1",
+  "description": "vitepres插件,支持在线编辑 Demo 演示源代码,支持SFC,JSX,TSX",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",

@@ -32,8 +32,7 @@ export default class Compiler {
     if (onError) {
       this.onError = onError;
     }
-    // 把 onError 放到全局上
-    this.handleRunTimeError();
+
     document.body.appendChild(this.styleEl);
     // 全局id++,避免重名
     g_id++;
@@ -228,20 +227,6 @@ export default class Compiler {
   }
   private clearError() {
     this.onError([]);
-  }
-  private handleRunTimeError() {
-    // window 错误捕获
-    this.listenError();
-    if (window) {
-      (window as any)[`__onError${this._id}`] = (
-        err: any,
-        component: any,
-        info: any
-      ) => {
-        this.handleError(Array.isArray(err) ? err : [err]);
-        throw err;
-      }; //全局可挂载一个错误函数,用于捕获执行时的报错
-    }
   }
 
   private revokeAllObjectURL() {

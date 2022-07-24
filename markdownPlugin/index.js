@@ -11,13 +11,17 @@ const markDownPlugin = function (md) {
           tokens[idx + 1].type === "fence" ? tokens[idx + 1].content : "";
 
         const lang = tokens[idx + 1].info;
-        const props = tokens[idx].info;
+        const props = tokens[idx].info + " ";
         const hasColumn = props.includes("column");
+        const heightRes = /height\:(.*?)\s/.exec(props);
+        const height = heightRes ? heightRes[1] : undefined;
+
         return `
         <clientOnly>
         <demo initial-value="${md.utils.escapeHtml(content)}" 
         direction="${hasColumn ? "column" : ""}"
         lang="${lang}"
+        height="${height}"
         >
         `;
       }

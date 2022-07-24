@@ -118,6 +118,20 @@ const text = ref("");
 :::
 ````
 
+设置 `height` 指定编辑器高度(有最小限制 column:200px row:300px)
+
+指定高度 400
+
+````md
+:::demo height:400
+
+```vue
+<!--  code -->
+```
+
+:::
+````
+
 ### jsx/tsx
 
 #### 配置 vite.config.js

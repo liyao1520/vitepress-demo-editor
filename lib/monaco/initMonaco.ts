@@ -32,12 +32,12 @@ export default async function init() {
     jsxTypes,
     `jsx:type`
   );
-    monaco.languages.typescript.typescriptDefaults.addExtraLib(
-      `
+  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+    `
     declare module 'vue' { ${vueTypes} }
   `,
-      "ts:vue"
-    );
+    "ts:vue"
+  );
 
   await Promise.all([
     // load workers
@@ -71,6 +71,6 @@ export default async function init() {
   return monaco;
 }
 
-export function onMonacoCreated(fn: (monaco: IMonaco) => void) {
-  onMonacoCreatedCallback = fn;
+export function onMonacoCreated(fn?: (monaco: IMonaco) => void) {
+  onMonacoCreatedCallback = fn || null;
 }

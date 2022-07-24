@@ -13,7 +13,9 @@ export const vuePlugin = function (app: Vue.App, config: IConfig) {
 
   const Demo = Vue.defineAsyncComponent(() => import("./components/Demo.vue"));
   app.component("Demo", Demo);
-
+  app.config.errorHandler = function (err) {
+    console.error(err);
+  };
   setVue(
     Object.assign({}, Vue, {
       // 解决 jsx 在 { } 中写入 object 类型 导致的报错
@@ -32,7 +34,10 @@ function enhanceCreateVnode() {
   return function (type: any, props: any, children: any, ...rest: any[]) {
     if (Array.isArray(children)) {
       children = children.map((vnode) => {
-        if (isObject(children) && !vnode.__v_isVNode) {
+        if (Array.isArray(vnode)) {
+          return vnode;
+        }
+        if (isObject(vnode) && !vnode.__v_isVNode) {
           return Vue.createTextVNode(String(vnode));
         }
         return vnode;

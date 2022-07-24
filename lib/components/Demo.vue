@@ -105,7 +105,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, defineProps, onMounted, nextTick, inject } from "vue";
+import {
+  ref,
+  defineProps,
+  onMounted,
+  nextTick,
+  inject,
+  onUnmounted,
+} from "vue";
 import Compiler from "../compiler";
 import { ConfigToken } from "../token";
 import Edit from "./Edit.vue";
@@ -119,6 +126,7 @@ const props = defineProps<{
   initialValue: string;
   direction?: "column" | "row";
   lang: "vue" | "jsx" | string;
+  height?: string;
 }>();
 
 const isTypeScript = "tsx" === props.lang;
@@ -138,7 +146,10 @@ const randomId = "id_" + Math.random().toString(36).slice(2, 12);
 
 const autoHeight = () => {
   const h = viewRef.value?.clientHeight || 0;
-  editHeight.value = h > 200 ? h : 200;
+  const res = /\d+/.exec(props.height || "");
+  const propsHeight = Number(res ? res[0] : 0);
+
+  editHeight.value = Math.max(h, propsHeight);
 };
 
 const resetCode = () => {
@@ -146,7 +157,7 @@ const resetCode = () => {
 };
 
 let compiler: Compiler;
-
+let observer: MutationObserver;
 onMounted(async () => {
   const { default: Compiler } = await import("../compiler");
 
@@ -158,10 +169,12 @@ onMounted(async () => {
   });
   compiler.compileCode(props.initialValue);
   autoHeight();
-  let observer = new MutationObserver(autoHeight);
+  observer = new MutationObserver(autoHeight);
   if (viewRef.value) observer.observe(viewRef.value, { childList: true });
 });
-
+onUnmounted(() => {
+  observer.disconnect();
+});
 const debounce = (fn: (...args: any[]) => any, wait: number) => {
   let timer: any;
   return (...args: any[]) => {

@@ -1,3 +1,5 @@
+// 开发中...
+
 export default async function (monaco: any, monacoInstance: any) {
   // 高亮代码
   const [{ default: MonacoJSXHighlighter, JSXTypes }, { parse }, traverse] =
