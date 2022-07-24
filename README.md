@@ -322,3 +322,5 @@ export default {
   <!-- html -->
 </html>
 ```
+
+## [CHANGELOG](https://github.com/liyao1520/vitepress-demo-editor/blob/master/CHANGELOG.md)
