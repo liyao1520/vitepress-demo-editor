@@ -28,8 +28,10 @@ export const vuePlugin = function (app: Vue.App, config: IConfig) {
 
   onMonacoCreated(config.onMonacoCreated);
 };
+
 export const isObject = (target: unknown) =>
   typeof target == "object" && target !== null;
+
 function enhanceCreateVnode() {
   return function (type: any, props: any, children: any, ...rest: any[]) {
     if (Array.isArray(children)) {
