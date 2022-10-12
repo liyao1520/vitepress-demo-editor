@@ -1,7 +1,7 @@
 {
   "name": "vitepress-demo-editor",
   "version": "3.0.2",
-  "description": "vitepres插件,支持在线编辑 Demo 演示源代码,支持SFC,JSX,TSX",
+  "description": "vitepress 插件,支持在线编辑 Demo 演示源代码,支持 SFC, JSX, TSX",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
