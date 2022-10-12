@@ -41,7 +41,7 @@
       </div>
       <Edit
         class="edit"
-        v-if="demoEditShow"
+        v-show="demoEditShow"
         :style="{
           height: editHeight + 'px',
           minHeight: direction === 'row' ? '200px' : '300px',
