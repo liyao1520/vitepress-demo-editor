@@ -61,6 +61,8 @@
     "@babel/plugin-transform-typescript": "^7.18.8",
     "@babel/standalone": "^7.18.8",
     "@vue/babel-plugin-jsx": "^1.1.1",
+    "@vue/runtime-core": "^3.2.40",
+    "@vue/runtime-dom": "^3.2.40",
     "browser-assert": "^1.2.1",
     "markdown-it-container": "^3.0.0",
     "monaco-editor-ex": "^0.33.8",
