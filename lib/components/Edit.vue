@@ -3,6 +3,7 @@ import { onMounted, ref, defineExpose } from "vue";
 import iDark from "../theme/dark.json";
 import iLight from "../theme/light.json";
 import initMonaco from "../monaco/initMonaco";
+import { getRandomId } from "../utils";
 const props = defineProps({
   initialValue: {
     type: String,
@@ -15,10 +16,6 @@ const props = defineProps({
   language: {
     type: String,
     default: "html",
-  },
-  randomId: {
-    required: true,
-    type: String,
   },
 });
 const emit = defineEmits(["change"]);
@@ -56,7 +53,8 @@ onMounted(async () => {
     fontSize: 14,
   });
   // 创建模型 文件名不能相同
-  const modelUri = monaco.Uri.file(`${props.randomId}.${extension}`);
+  // 随机名字即可, fix : #5
+  const modelUri = monaco.Uri.file(`${getRandomId()}.${extension}`);
   const codeModel = monaco.editor.createModel(
     props.initialValue,
     language,

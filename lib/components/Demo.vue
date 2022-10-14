@@ -41,13 +41,12 @@
       </div>
       <Edit
         class="edit"
-        v-show="demoEditShow"
+        v-if="demoEditShow"
         :style="{
           height: editHeight + 'px',
           minHeight: direction === 'row' ? '200px' : '300px',
         }"
         :initial-value="$props.initialValue"
-        :randomId="randomId"
         @change="handleChange"
         :language="$props.lang"
         ref="editRef"
@@ -115,6 +114,7 @@ import {
 } from "vue";
 import Compiler from "../compiler";
 import { ConfigToken } from "../token";
+import { getRandomId } from "../utils";
 import Edit from "./Edit.vue";
 
 const { ms, defaultDirection, handleError } = inject(ConfigToken, {
@@ -142,7 +142,7 @@ const editRef = ref<any>(null);
 
 const toolsShow = ref(false);
 
-const randomId = "id_" + Math.random().toString(36).slice(2, 12);
+const randomId = "id_" + getRandomId();
 
 const autoHeight = () => {
   const h = viewRef.value?.clientHeight || 0;
