@@ -6,7 +6,10 @@ import { setVue, setApp } from "./memo";
 import { onMonacoCreated } from "./monaco/initMonaco";
 import { ConfigToken, IConfig } from "./token";
 
-export { addImportMap } from "./compiler/importMaps";
+import { addImportMap } from "./compiler/importMaps";
+import { enhanceCreateVnode } from "./utils";
+
+export { addImportMap };
 
 export const vuePlugin = function (app: Vue.App, config: IConfig) {
   config = Object.assign({ ms: 300, defaultDirection: "row" as "row" }, config);
@@ -19,7 +22,7 @@ export const vuePlugin = function (app: Vue.App, config: IConfig) {
   setVue(
     Object.assign({}, Vue, {
       // 解决 jsx 在 { } 中写入 object 类型 导致的报错
-      createVNode: enhanceCreateVnode(),
+      createVNode: enhanceCreateVnode(Vue),
     })
   );
   setApp(app);
@@ -29,23 +32,7 @@ export const vuePlugin = function (app: Vue.App, config: IConfig) {
   onMonacoCreated(config.onMonacoCreated);
 };
 
-export const isObject = (target: unknown) =>
-  typeof target == "object" && target !== null;
-
-function enhanceCreateVnode() {
-  return function (type: any, props: any, children: any, ...rest: any[]) {
-    if (Array.isArray(children)) {
-      children = children.map((vnode) => {
-        if (Array.isArray(vnode)) {
-          return vnode;
-        }
-        if (isObject(vnode) && !vnode.__v_isVNode) {
-          return Vue.createTextVNode(String(vnode));
-        }
-        return vnode;
-      });
-    }
-    const vnode = Vue.createVNode(type, props, children, ...rest);
-    return vnode;
-  };
-}
+export default {
+  vuePlugin,
+  addImportMap,
+};
