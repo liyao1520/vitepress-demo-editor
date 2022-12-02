@@ -1,24 +1,21 @@
 {
   "name": "vitepress-demo-editor",
-  "version": "3.0.6",
+  "version": "3.1.0-beta.5",
   "description": "vitepress 插件,支持在线编辑 Demo 演示源代码,支持 SFC, JSX, TSX",
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.es.js",
+  "type": "module",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
     },
     "./markdownPlugin": {
-      "require": "./markdownPlugin/index.js",
       "import": "./markdownPlugin/index.js",
-      "type": "./markdownPlugin.d.ts"
+      "require": "./markdownPlugin/index.umd.cjs"
     },
-    "./dist/*": {
-      "import": "./dist/*",
-      "require": "./dist/*"
-    }
+    "./dist/": "./dist/"
   },
   "license": "MIT",
   "keywords": [
@@ -54,21 +51,22 @@
     "@vitejs/plugin-vue": "^3.0.1",
     "vite": "^3.0.2",
     "vite-plugin-dts": "^1.3.0",
+    "vite-plugin-static-copy": "^0.12.0",
     "vitepress": "^1.0.0-alpha.4"
   },
   "dependencies": {
     "@babel/core": "^7.18.9",
     "@babel/plugin-transform-typescript": "^7.18.8",
     "@babel/standalone": "^7.18.8",
-    "@vue/babel-plugin-jsx": "^1.1.1",
-    "@vue/runtime-core": "^3.2.40",
-    "@vue/runtime-dom": "^3.2.40",
     "browser-assert": "^1.2.1",
     "markdown-it-container": "^3.0.0",
     "monaco-editor-ex": "^0.33.8",
     "path-browserify": "^1.0.1"
   },
   "peerDependencies": {
+    "@vue/babel-plugin-jsx": ">=1.0.0",
+    "@vue/runtime-core": ">=3.0.0",
+    "@vue/runtime-dom": ">=3.0.0",
     "vitepress": ">=0.1.0",
     "vue": ">=3.0.0"
   }

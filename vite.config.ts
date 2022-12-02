@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-// import dts from "vite-plugin-dts";
+import dts from "vite-plugin-dts";
 
 import { resolve } from "path";
 
@@ -12,19 +12,21 @@ export default defineConfig({
       path: "path-browserify",
     },
   },
-  plugins: [vue()],
+  plugins: [vue(), dts()],
   build: {
     cssCodeSplit: false,
     lib: {
       entry: resolve(__dirname, "lib", "index.ts"),
       name: "demoEditor",
-      fileName: (format) => `[name].${format}.js`,
-      formats: ["es", "cjs"],
+      fileName: "index",
+      formats: ["es", "umd"],
     },
     rollupOptions: {
       external: [
         "vue",
-        // "@vue/babel-plugin-jsx",
+        "@vue/babel-plugin-jsx",
+        "@vue/runtime-dom",
+        "@vue/runtime-core",
         // "@babel/standalone",
         // "@babel/plugin-transform-typescript",
         // "vue/compiler-sfc",
