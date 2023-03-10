@@ -16,7 +16,7 @@
 
 ## demo 预览
 
-[promiseui](http://ui.coderly.top/components/button/) (一个 vue3 组件库)
+[promiseui](https://liyao1520.github.io/promise-ui/components/button/) (一个 vue3 组件库)
 
 ## 安装
 
